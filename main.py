@@ -341,18 +341,118 @@ import numpy as np
 # print(type(dates),66)
 # print(type(delta))
 #
-import pandas as pd
-left = pd.DataFrame({
-         'student_id':[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-         'student_name': ['Alex', 'Amy', 'Allen', 'Alice', 'Ayoung', 'Billy', 'Brian', 'Bran', 'Bryce', 'Betty', 'Emma', 'Marry', 'Allen', 'Jean', 'Rose', 'David', 'Tom', 'Jack', 'Daniel', 'Andrew'],
-         'class_id':[1,1,1,2,2,2,3,3,3,4,1,1,1,2,2,2,3,3,3,2],
-         'gender':['M', 'M', 'F', 'F', 'M', 'M', 'F', 'F', 'M', 'M', 'F', 'F', 'M', 'M', 'F', 'F', 'M', 'M', 'F', 'F'],
-         'age':[20,21,22,20,21,22,23,20,21,22,20,21,22,23,20,21,22,20,21,22],
-         'score':[98,74,67,38,65,29,32,34,85,64,52,38,26,89,68,46,32,78,79,87]})
-right = pd.DataFrame(
-         {'class_id':[1,2,3,5],
-         'class_name': ['ClassA', 'ClassB', 'ClassC', 'ClassE']})
-# 合并两个DataFrame
-data = pd.merge(left,right)
-print(data.pivot_table(index=['class_id', 'gender'], values=['score'],
-                       columns=['age']))
+# import pandas as pd
+# left = pd.DataFrame({
+#          'student_id':[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+#          'student_name': ['Alex', 'Amy', 'Allen', 'Alice', 'Ayoung', 'Billy', 'Brian', 'Bran', 'Bryce', 'Betty', 'Emma', 'Marry', 'Allen', 'Jean', 'Rose', 'David', 'Tom', 'Jack', 'Daniel', 'Andrew'],
+#          'class_id':[1,1,1,2,2,2,3,3,3,4,1,1,1,2,2,2,3,3,3,2],
+#          'gender':['M', 'M', 'F', 'F', 'M', 'M', 'F', 'F', 'M', 'M', 'F', 'F', 'M', 'M', 'F', 'F', 'M', 'M', 'F', 'F'],
+#          'age':[20,21,22,20,21,22,23,20,21,22,20,21,22,23,20,21,22,20,21,22],
+#          'score':[98,74,67,38,65,29,32,34,85,64,52,38,26,89,68,46,32,78,79,87]})
+# right = pd.DataFrame(
+#          {'class_id':[1,2,3,5],
+#          'class_name': ['ClassA', 'ClassB', 'ClassC', 'ClassE']})
+# # 合并两个DataFrame
+# data = pd.merge(left,right)
+# print(data.pivot_table(index=['class_id', 'gender'], values=['score'],
+#                        columns=['age']))
+
+from pytdx.hq import TdxHq_API
+from pytdx.exhq import TdxExHq_API
+
+from pytdx.params import TDXParams
+
+# api = TdxHq_API()
+# exapi = TdxExHq_API()
+# BLOCK_SZ = "block_zs.dat"
+# BLOCK_FG = "block_fg.dat"
+# BLOCK_GN = "block_gn.dat"
+# BLOCK_DEFAULT = "block.dat"
+# with api.connect('119.147.212.81', 7709):
+#     wk = api.get_security_bars(7,0,"000831", 0, 800)
+#     wk_df = api.to_df(wk)
+#     #拿到五矿稀土今天的数据
+#     print(wk_df[wk_df["datetime"]>"2022-01-25 00:00"])
+    # stock_df = api.to_df(api.get_security_list(0,1))
+    # print(stock_df)
+    # print(stock_df["code"])
+    # content = api.to_df(api.get_company_info_category(TDXParams.MARKET_SZ, "000681"))
+    #
+    # data = api.get_company_info_content(0, '000001', '000001.txt', 0,100000)
+    # print(data)
+    # print(api.to_df(api.get_and_parse_block_info(TDXParams.BLOCK_SZ)))
+    # exapi.get_instrument_info(0,)
+
+# import cv2 as cv
+# image = cv.imread("1.jpg")
+# GRAY=cv.cvtColor(image,cv.COLOR_BGR2GRAY)
+# cv.imshow("GRAY",GRAY)
+# cv.waitKey(0)
+# cv.destroyAllWindows()
+
+
+# import numpy as np
+# from matplotlib import pyplot as plt
+# from mpl_toolkits.mplot3d import axes3d   #必须导入
+#
+# n=1000
+# x,y = np.meshgrid(np.linspace(-3,3,n),np.linspace(-3,3,n)) #x,y直接组成坐标点矩阵
+# z = x*y
+# plt.figure("3D Surface",facecolor="lightgray")
+# # ax3d = plt.gca(projection="3d")
+# # ax3d.set_xlabel("x")
+# # ax3d.set_ylabel("y")
+# # ax3d.set_zlabel("z")
+# ax3d = plt.axes(projection="3d")
+# ax3d.set_xlabel("x")
+# ax3d.set_ylabel("y")
+# ax3d.set_zlabel("z")
+#
+# ax3d.plot_surface(x,y,z,cstride=30,rstride=30,cmap="jet")
+# plt.show()
+# import numpy as np
+# import matplotlib.pyplot as mp
+# train_x = np.array([0.5, 0.6, 0.8, 1.1, 1.4])
+# train_y = np.array([5.0, 5.5, 6.0, 6.8, 7.0])
+# test_x = np.array([0.45, 0.55, 1.0, 1.3, 1.5])
+# test_y = np.array([4.8, 5.3, 6.4, 6.9, 7.3])
+#
+# times = 1000	# 定义梯度下降次数
+# lrate = 0.01	# 记录每次梯度下降参数变化率
+# epoches = []	# 记录每次梯度下降的索引
+# w0, w1, losses = [1], [1], []
+# for i in range(1, times + 1):
+#     epoches.append(i)
+#     loss = (((w0[-1] + w1[-1] * train_x) - train_y) ** 2).sum() / 2
+#     losses.append(loss)
+#     d0 = ((w0[-1] + w1[-1] * train_x) - train_y).sum()
+#     d1 = (((w0[-1] + w1[-1] * train_x) - train_y) * train_x).sum()
+#     print('{:4}> w0={:.8f}, w1={:.8f}, loss={:.8f}'.format(epoches[-1], w0[-1], w1[-1], losses[-1]))
+#     w0.append(w0[-1] - lrate * d0)
+#     w1.append(w1[-1] - lrate * d1)
+#
+# pred_test_y = w0[-1] + w1[-1] * test_x
+# w0 = w0[:-1]
+# w1 = w1[:-1]
+#
+# import mpl_toolkits.mplot3d as axes3d
+#
+# grid_w0, grid_w1 = np.meshgrid(
+#     np.linspace(0, 9, 500),
+#     np.linspace(0, 3.5, 500))
+#
+# grid_loss = np.zeros_like(grid_w0)
+# for x, y in zip(train_x, train_y):
+#     grid_loss += ((grid_w0 + x*grid_w1 - y) ** 2) / 2
+#
+# mp.figure('Loss Function')
+# ax = mp.axes(projection="3d")
+# mp.title('Loss Function', fontsize=20)
+# ax.set_xlabel('w0', fontsize=14)
+# ax.set_ylabel('w1', fontsize=14)
+# ax.set_zlabel('loss', fontsize=14)
+# ax.plot_surface(grid_w0, grid_w1, grid_loss, rstride=10, cstride=10, cmap='jet')
+# ax.plot(w0, w1, losses, 'o-', c='orangered', label='BGD')
+# mp.legend()
+# mp.show()
+
