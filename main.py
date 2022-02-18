@@ -455,4 +455,226 @@ from pytdx.params import TDXParams
 # ax.plot(w0, w1, losses, 'o-', c='orangered', label='BGD')
 # mp.legend()
 # mp.show()
+# import  numpy as np
+# aa = np.array([])
+# a=np.array([2, 2, 2, 2, 2])
+# aa.append([1,2])
+# print(aa)
+
+# a= np.arange(1,7).reshape(2,3)
+# print(a.shape[1])
+
+
+# # 案例：预测波士顿地区房屋价格。
+# import sklearn.datasets as sd
+# # 打乱数据集用
+# import sklearn.utils as su
+# import sklearn.ensemble as se
+# import numpy as np
+# # 获得波士顿地区房屋价格的第一种方式，注意：load_boston()函数在1.2版本中已经被分离
+# boston = sd.load_boston()
+# x, y = su.shuffle(boston.data, boston.target, random_state=7)
+# # print(boston.data.shape,boston.target.shape)
+# # print(boston.feature_names,len(boston.feature_names))
+#
+# # 划分训练集和测试集
+# train_size = int(len(x) * 0.8)  #从总样本中挑出80%用作训练集，剩下20%用作测试集
+# train_x, train_y, test_x, test_y = x[:train_size], y[:train_size], x[train_size:], y[train_size:]
+#
+# # train_y = train_y.reshape(-1,1)
+# # data = d=np.hstack((train_x,train_y))
+# # np.savetxt("1.csv",data,delimiter=',')
+#
+#
+# def split_sample_space(y:"result set"):
+#      # 通过结果集划分子样本空间
+#     sub_sample_set = {}
+#     # print(y,type(y))
+#     for data in y:
+#         if data not in sub_sample_set.keys():
+#             sub_sample_set[data] = 0
+#         sub_sample_set[data] += 1
+#     return sub_sample_set
+#
+#
+#
+# #计算信息熵
+# def calcInfoEnt(x:"Feature set",y:"result set"):
+#
+#     sub_sample_set = split_sample_space(y)
+#     # 信息熵公式 H(X) = = -∑P(Xᵢ)log₂(P(Xᵢ))
+#     sample_length = len(x)
+#
+#     # 计算信息熵
+#     infoEnt = 0.0
+#     for key,value in sub_sample_set.items():
+#         '''
+#             :key     子样本空间划分依据(程序中未使用)
+#             :value   子样本空间大小
+#         '''
+#         # 根据子样本空间大小计算P(Xᵢ)
+#         pxi = float(value) / sample_length
+#         # 计算 ∑P(Xᵢ)log₂(P(Xᵢ))
+#         infoEnt += pxi * np.log2(pxi)
+#     #返回H(X)
+#     return -infoEnt
+#
+# #划分数据集
+# def split_dataSet(x:"Feature set",y:"result set",split_index:"column index",unique_value):
+#     newdataSet=[]
+#     newResultSet=[]
+#     for row in x:
+#         # 判断该列值是否等于唯一值
+#         if row[split_index] == unique_value:
+#             # print(unique_value,917)
+#
+#             #获取该数的行级索引
+#             row_index = np.where((x == row).all(axis = 1))
+#             # print(row_index,924)
+#
+#             subDataSet = list(row[:split_index])
+#             #根据唯一值获取第2-n所构成的子表
+#             subDataSet.extend(row[split_index+1:])
+#             # 将子表添加到新的数据集中
+#             newdataSet.append(np.array(subDataSet))
+#
+#             # 将子表对应的结果添加到新的结果集中
+#             newResultSet.append(y[row_index])
+#
+#
+#
+#
+#
+#     return np.array(newdataSet),np.array(newResultSet).flatten()
+#
+# #对结果集进行投票排序
+# import operator
+# def majorityCnt(resultSet):
+#     classCount = {}
+#     for vote in resultSet:
+#         if vote not in classCount.keys():
+#             classCount[vote] = 0
+#         classCount[vote] += 1
+#     sortedclassCount = sorted(classCount.items(), key=operator.itemgetter(1), reverse=True)
+#     return sortedclassCount[0][0]
+#
+#
+# #选择最好的数据集划分方式
+# def choose_best_feature_to_split(x:"Feature set",y:"result set"):
+#
+#     #计算未切分前数据集信息熵
+#     baseInfoEnt = calcInfoEnt(x,y)
+#     #最好的信息增益为0.0
+#     bestInfoGain = 0.0
+#     #设置初始值
+#     bestFeature = -1
+#     #获取特征集的长度
+#     sample_length = x.shape[1]
+#     for i in range(sample_length):
+#
+#         # 获取数据集的每列特征值
+#         columns_feature_value_list=[row[i] for row in x]
+#         #分表
+#         unique_value_list = list(set(columns_feature_value_list))
+#         newInfoEnt =  0.0
+#         for unique_value in unique_value_list:
+#             #切分数据集
+#             newdataSet,newResultSet = split_dataSet(x,y,i,unique_value)
+#             #计算子表的熵
+#             proportion = len(newdataSet) / float(len(x))
+#             newInfoEnt += proportion * calcInfoEnt(newdataSet,newResultSet)
+#
+#         #计算信息增益    划分前的信息熵 - 划分后的信息熵
+#         infoGain = baseInfoEnt - newInfoEnt
+#         if infoGain > bestInfoGain:
+#             baseInfoEnt = infoGain
+#             bestFeature = i
+#
+#     return bestFeature
+#
+#
+#
+#
+#
+# def createTree(x:"Feature set",y:"result set"):
+#     y1 =list(y)
+#     # print(y1)
+#     if y1.count(y1[0]) == len(y1):
+#
+#         return y1[0]
+#     if len(x[0]) == 1:
+#         return majorityCnt(y1)
+#
+#     bestFeature = choose_best_feature_to_split(x,y)
+#     print(bestFeature,607,y)
+#
+#     myTree = {y[bestFeature]: {}}
+#
+#     featValues = [row[bestFeature] for row in x]
+#
+#     unique_value_list = list(set(featValues))
+#
+#     for unique_value in unique_value_list:
+#         newdataSet,newResultSet = split_dataSet(x,y,bestFeature,unique_value)
+#         myTree[y[bestFeature]][unique_value] = createTree(newdataSet,newResultSet)
+#     # return myTree
+# res = createTree(train_x, train_y)
+# print(res)
+# import matplotlib.pyplot as plt
+# # 解决中文问题
+# from matplotlib.font_manager import FontProperties
+#
+# font = FontProperties(fname=r"c:\windows\fonts\simsun.ttc", size=14)
+#
+# decisionNode = dict(boxstyle='sawtooth', fc="0.8")
+# leafNode = dict(boxstyle='round4', fc='0.8')
+# arrow_args = dict(arrowstyle='<-')
+#
+#
+#
+# def createPlot():
+#
+#     fig = plt.figure(1, facecolor='white')
+#     fig.clf()
+#     plt.subplot(111, frameon=False)
+#
+#
+#     plt.annotate("决策节点", xy=(0.1, 0.5), xycoords='axes fraction', xytext=(0.5, 0.1), textcoords='axes fraction',
+#                             va="center", bbox=decisionNode, arrowprops=arrow_args, fontproperties=font)
+#     plt.annotate("叶节点", xy=(0.3, 0.8), xycoords='axes fraction', xytext=(0.8, 0.1),
+#                             textcoords='axes fraction',
+#                             va="center", bbox=leafNode, arrowprops=arrow_args, fontproperties=font)
+#
+#     plt.show()
+#
+#
+# createPlot()
+# def getNumLeafs(myTree):
+#     numleafs=0
+#     firstStr=myTree.keys()[0]
+#     secondDict=myTree[firstStr]
+#     for key in secondDict.keys():
+#         if type(secondDict[key]).__name__=="dict":
+#             numleafs+=getNumLeafs(secondDict[key])
+# #         else:
+#             numleafs+=1
+#     return numleafs
+# def getTreeDepth(myTree):
+#     maxDepth=0
+#     firstStr=myTree.keys()[0]
+#     secondDict=myTree[firstStr]
+#     for key in secondDict.keys():
+#         if type(secondDict[key]).__name__=="dict":
+#             thisDepth=1+getTreeDepth(secondDict[key])
+#         else:
+#             thisDepth=1
+#         if thisDepth>maxDepth:
+#             maxDepth=thisDepth
+#     return maxDepth
+# getNumLeafs(res)
+# getTreeDepth(res)
+
+s = {0.0: 'setosa', 1.0: 'versicolor', 2.0: 'virginica'}
+s1 = [2.0, 1.0, 0.0, 1.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 2.0, 0.0, 1.0, 2.0, 2.0, 0.0, 0.0, 1.0, 2.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 0.0, 2.0, 1.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 1.0, 2.0, 2.0, 1.0, 0.0, 1.0, 1.0, 2.0, 0.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 2.0, 1.0, 1.0, 0.0, 2.0, 0.0, 0.0, 2.0, 2.0, 0.0, 2.0, 0.0, 1.0, 2.0, 1.0, 0.0, 1.0, 0.0, 2.0, 2.0, 1.0, 0.0, 0.0, 1.0, 2.0, 0.0, 2.0, 2.0, 1.0, 0.0, 1.0, 0.0, 2.0, 2.0, 0.0, 0.0, 2.0, 1.0, 2.0, 2.0, 1.0, 0.0, 0.0, 2.0, 0.0, 0.0, 1.0, 2.0, 2.0, 1.0, 1.0, 0.0, 2.0, 0.0, 0.0, 1.0, 1.0, 2.0]
+[s[i] for i in s1]
 
